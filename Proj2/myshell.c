@@ -1,7 +1,9 @@
 #include<stdio.h>
 #include<string.h>
+#include<errno.h>
 
 int parseCLinput(char *);
+void handleStart (char **, int);
 
 int main(int argc, char ** argv){
 
@@ -12,7 +14,10 @@ int main(int argc, char ** argv){
     int done = 0;
     while(done == 0){
         printf("myshell> ");
-        fgets(comLine, sizeof(comLine), stdin);
+
+        if ( fgets(comLine, sizeof(comLine), stdin) == NULL) {
+            break; // EOF
+        }
 
         // Parse the user's input, and direct as appropriate
         done = parseCLinput(comLine);
@@ -46,7 +51,37 @@ int parseCLinput(char * comLine){
     }
 
     // Check First Argument as handle as needed
+    if (!strcmp(argys[0], "start")) {
+        handleStart(argys, nwords);
+    } else if (!strcmp(argys[0], "wait")){
+        
+    } else if (!strcmp(argys[0], "run")){
+        
+    } else if (!strcmp(argys[0], "kill")){
+        
+    } else if (!strcmp(argys[0], "stop")){
+        
+    } else if (!strcmp(argys[0], "continue")){
+        
+    } else {
+        printf("myshell: Unknown command: %s\n", argys[0]);
+        return 0;
+    }
     
 
     return 0;
+}
+
+void handleStart(char ** argys, int nwords){
+
+    int rc = fork();
+    if ( rc < 0  ){
+        printf("myshell: Failure on fork(): %s", strerror(errno));
+        exit(1);
+    } else if (rc == 0 ) { // the child
+        printf("child process. PID: %d", (int) getpid());
+
+    }
+
+
 }
