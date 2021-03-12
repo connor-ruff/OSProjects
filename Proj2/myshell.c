@@ -188,7 +188,7 @@ int handleWait(int nwords){
 
     // run the wait MF
     if ( (rc = wait(&waitStatus)) == -1){
-        printf("myshell: No child processes left\n");
+        printf("myshell: %s\n", strerror(errno));
     }
 
     // indicates child was affected by some signal
@@ -197,12 +197,12 @@ int handleWait(int nwords){
     }
     
     // child exited normally, but return code still made indicate an error!
-        else if (WIFEXITED(waitStatus)){
+    else if (WIFEXITED(waitStatus)){
         printf("myshell: process %d exit normally with status %d\n", rc, WEXITSTATUS(waitStatus));
     }
 
     // probably won't run...
-        else{
+    else{
         printf("myshell: unexpected behavior in process %d\n", rc);
     }
 
